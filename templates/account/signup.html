@@ -1,0 +1,81 @@
+{% extends "account/base.html" %}
+
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+
+{% block stylish %}
+<link rel="stylesheet" href="{% static 'css/account/signup.css' %}">
+{% endblock stylish %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<div class="container-f">
+  <h2 id="h2">
+      <div>從今天開始</div>
+      記錄美好生活
+  </h2>
+  <p class="description">
+      拒絕拼命工作，通過構建博客增加被動收入，聰明地提高工作效率。
+  </p>
+
+  <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+
+    {% for field in form.visible_fields %}
+      <div class="form-group">
+        {% if field.id_for_label == 'id_username' %}
+          <i class="fa fa-user-circle"></i>
+        {% elif field.id_for_label == 'id_password1'  %}
+          <i class="fa fa-lock"></i>
+        {% elif field.id_for_label == 'id_password2'  %}
+          <i class="fa fa-lock"></i>
+        {% elif field.id_for_label == 'id_email' %}
+          <i class="fa fa-envelope"></i>
+        {% else %}  <!--電話-->
+          <i class="fa fa-phone-square"></i>
+        {% endif %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field|add_class:'form-control' }}
+        {% for error in field.errors %}
+          <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+    {% endif %}
+
+    <button type="submit" class="btn" id="id_regis">{% trans "Sign Up" %} &raquo;</button>
+
+    <label class="label" for="term-of-use">
+      <input type="checkbox" name="term-of-use" id="term-of-use">
+      <span class="checkmark"></span>
+    我同意 <a href="#">使用條款</a>
+    </label>
+    <br>
+    <h5>或使用第三方注册</h5>
+    <div class="social">
+      <div class="icon-holder">
+        <a href="/accounts/google/login/?process=login/"><i class="fa fa-google"></i></a>
+      </div>
+      <div class="icon-holder">
+        <a href="/accounts/discord/login/?process=login/"><i class="fa fa-headphones"></i></a>
+      </div>
+      <div class="icon-holder">
+        <a href="/accounts/github/login/?process=login/"><i class="fa fa-github"></i></a>
+      </div>
+    </div>
+
+    <div class="login">
+      <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>{% endblocktrans %}</p>
+    </div>
+  </form>
+</div>
+{% endblock %}

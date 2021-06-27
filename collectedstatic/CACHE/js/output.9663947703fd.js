@@ -1,0 +1,2 @@
+$('#myfile').change(function(){let myFileReaderObj=new FileReader();let fileObj=$(this)[0].files[0];myFileReaderObj.readAsDataURL(fileObj)
+myFileReaderObj.onload=function(){$('#myimg').attr('src',myFileReaderObj.result)}});

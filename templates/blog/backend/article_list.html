@@ -1,0 +1,72 @@
+{% extends "blog/backend/backend.html" %}
+
+{% block article %}
+{% csrf_token %}
+<!--接收用戶所有文章-->
+    <table class="table table-hover table-striped" id="table">
+        <thead>
+            <tr>
+                <th>標題</th>
+                <th>評論數</th>
+                <th>點贊數</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in article_list  %}
+            <tr>
+                <td><a href="/blog/{{ user_obj.nickname }}/article/{{ article.pk }}">{{ article.title }}</a></td>
+                <td>{{ article.comment_num }}</td>
+                <td>{{ article.like_num }}</td>
+                <td><a href="/blog/{{ user_obj.nickname }}/article/{{ article.pk }}/article_update" class="btn-xs btn-info">編輯</a></td>
+                <td><a href="#" id="ajax_delete" class="btn-xs btn-danger" data-id="{{ article.pk }}" data-slug="{{ user_obj.nickname }}">刪除</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ page_obj.page_html|safe }}
+{% endblock article %}
+
+{% block js %}
+<script>
+var csrftoken = $('input[name=csrfmiddlewaretoken]').val();
+
+function csrfSafeMethod(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+$(document).ready(function () {
+    $("tr").on("click", "#ajax_delete", function () {
+        var flag = confirm("您真的確定要删除嗎？")
+        if (flag) {
+            var pk = $(this).data('id');
+            var slug1 = $(this).data('slug');
+            var url = '/blog/' + slug1 + '/article/' + pk + '/delete'
+            $.ajax({
+                url: url,
+                type: "POST",
+                // 获取POST所需的csrftoken
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+                success: function (res) {
+                    swal({
+                    title: "Deleted！",
+                    text: "文章已刪除!",
+                    type: "error",
+                    },
+                    function(){
+                        $('#ajax_delete').parents('tr').remove()
+                        window.location.reload()
+                    });
+                }
+            })
+        }
+    })
+})
+
+
+</script>
+{% endblock %}

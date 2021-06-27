@@ -1,0 +1,74 @@
+{% extends "account/base.html" %}
+{% load static %}
+
+{% block head_title %}搜索结果{% endblock %}
+
+{% block stylish %}
+<link rel="stylesheet" href="{% static 'css/blog/index.css' %}">
+{% endblock stylish %}
+
+
+{% block content %}
+<img src="{% static 'img/banner.jpg' %}" alt="banner" class="banner">
+<!--導航條-->
+<nav class="navbar navbar-inverse">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+      <a href="/blog/index/"><img src="{% static 'img/logo.png' %}" alt="woodrex" id="logo">&nbsp;&nbsp;</a>
+      </div>
+  
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+          <li class="active"><a href="#">博客<span class="sr-only">(current)</span></a></li>
+          <li><a href="#">文章</a></li>
+      </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </div>  
+</nav>
+
+<!--頁面-->
+<div class="container-fluid" id="blog-color">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+        {% if query %}
+        <h3>搜索结果</h3>
+        {% for result in page.object_list %}
+        <li class="media" id="media">
+            <h4 class="media-heading"><a style="text-decoration:none;" href="/blog/{{ result.object.blog.user.nickname }}/article/{{ result.object.pk }}/">{{ result.object.title }}</a></h4>
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object" src="/media/{{ result.object.blog.user.avatar }}" alt="" width="80">
+                    </a>
+                </div>
+            <div class="media-body">
+                <div class="media-body">
+                    {{ result.object.desc }}
+                </div>
+            </div>
+            <div class="pull-right">
+                <span>posted</span>
+                <span>@</span>
+                <span>{{ result.object.create_time|date:'Y-m-d' }}</span>
+                <span>{{ result.object.blog.user.nickname }}</span>
+                <span><i class="fa fa-comment" aria-hidden="true"></i></span>{{ result.object.comment_num }}&nbsp;&nbsp;</span>
+                <span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span>{{ result.object.like_num }}&nbsp;&nbsp;</span>
+                <span><i class="fa fa-book" aria-hidden="true"></i>{{ result.object.views }}&nbsp;&nbsp;</span>
+                <span><a href="#">编辑&nbsp;&nbsp;</a></span>
+            </div>
+            {% empty %}
+            <h3>沒有找到相關文章</h3>
+        {% endfor %}
+        {% endif %}
+        </li>
+        <br>
+        <a href="/blog/index/">返回主頁</a>
+    </div>
+</div>
+
+
+{% endblock %}

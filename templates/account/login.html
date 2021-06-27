@@ -1,0 +1,81 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block stylish %}
+<link rel="stylesheet" href="{% static 'css/account/login.css' %}">
+{% endblock stylish %}
+
+{% block content %}
+
+<div class="aui-register-box">
+    <div class="aui-register-link">
+        <a href="/blog/index/" class="fl">返回首頁</a>
+        <a href="/accounts/signup/" class="fr">沒有賬戶？去注冊</a>
+    </div>
+    <div class="aui-register-logo">
+        <img src="{% static 'img/logo.png' %}" alt="">
+    </div>
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+      {% csrf_token %}
+      <div class="register-wrap">
+        <div class="register">
+            <div class="register-top" id="reg-top" style="display: block;">
+                <h2 class="normal" id="normal">普通登陸</h2>
+                <h2 class="nopassword" id="nopw">二維碼登陸</h2>
+            </div>
+            <div class="aui-register-form-item">
+                <label for="id_login">登入：</label>
+                <input type="text" name="login" required id="id_login" class="form-control" placeholder="使用者名稱或電子郵件"
+                  autocomplete="email">
+            </div>
+            <div class="aui-register-form-item">
+                <label for="id_password">密碼：</label>
+                <input type="password" name="password" required id="password" class="form-control" placeholder="密碼" autocomplete="current-password">
+            </div>
+            <div class="aui-register-form-checkbox">
+              <label for="id_remember">記住我：</label>
+              <input type="checkbox" name="remember" id="id_remember">
+          </div>
+        </div>
+        <div class="aui-register-form-item">
+            <p class="aui-for-pwd">
+                <a class="" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+            </p>
+            <button id="id_commit" class="aui-btn-reg" placeholder="" readonly="readonly" class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+        </div>
+    </form>
+        <div class="aui-protocol">
+            登陸即同意
+            <a href="#">《使用協議》</a>
+        </div>
+        <div class="aui-thirds">
+            <a href="/accounts/google/login/?process=login/">
+                <i class="fa fa-google"></i>
+                <i>Google登陸</i>
+            </a>
+            <a href="/accounts/discord/login/?process=login/">
+                <i class="fa fa-headphones"></i>
+                <i>Discord登陸</i>
+            </a>
+            <a href="/accounts/github/login/?process=login/">
+                <i class="fa fa-github"></i>
+                <i>Github登录</i>
+            </a>
+            <div class="clear"></div>
+        </div>
+        <div class="aui-register-bottom">
+            <a>©woodrex83</a>
+            <a href="#">聯系客服</a>
+            <a href="#">幫助中心</a>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

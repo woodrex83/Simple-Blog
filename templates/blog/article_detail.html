@@ -1,0 +1,300 @@
+{% extends "blog/base.html" %}
+
+{% load static %}
+{% block stylish %}
+<link rel="stylesheet" href="{% static 'plugin/sweetalert.css' %}">
+<link rel="stylesheet" href="{% static 'css/blog/site.css' %}">
+<script src="{% static 'plugin/sweetalert.js' %}"></script>
+{% endblock stylish %}
+
+{% block head_title %}文章 - {{ article_obj.title }}{% endblock %}
+
+{% block body %}
+{% csrf_token %}
+
+<div id="blogTitle">
+    <a id="lnkBlogLogo" href="/blog/{{ user_obj.nickname }}/"><img id="blogLogo" src="/media/{{ user_obj.avatar }}/" alt="返回主页"></a>		
+    
+
+    <h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="">{{ user_obj.nickname }}</a></h1>
+    <h2>{{ user_obj.blog.site_title }}</h2>
+</div>
+<img src="/media/{{ user_obj.background }}/" alt="banner" class="banner">
+
+<!--導航條-->
+
+<nav class="navbar navbar-inverse">
+  <div class="col-md-9 col-md-offset-1">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a href="/blog/index/"><img src="{% static 'img/logo.png' %}" alt="woodrex" id="logo">&nbsp;&nbsp;</a>
+      </div>
+  
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/blog/{{ user_obj.nickname }}/">{{ user_obj.nickname }} <span class="sr-only">(current)</span></a></li>
+          <li class="active"><a href="#">文章</a></li>
+          <!-- <li class="dropdown"> -->
+          <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">更多 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">One more separated link</a></li>
+          </ul> -->
+          </li>
+      </ul>
+      <form class="navbar-form navbar-left" action="{% url 'blog:haystack_search' %}" method="get">
+        <div class="form-group" id="searchbar">
+        <input type="text" class="form-control" name="q" placeholder="Search">
+        </div>
+        <!-- <button type="submit" class="btn btn-info">Submit</button> -->
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+          {% if request.user.is_authenticated %}
+              <li><a href="/blog/{{ user_obj.nickname }}">歡迎回來，{{ user_obj.nickname }}</a></li>
+              {% if not user_obj.isnickname %}
+              <li><a href="#" data-toggle="modal" data-target=".bs-example-modal-lg">設置昵稱</a></li>
+              {% endif %}
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">更多操作 <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/accounts/password/change/">修改密碼</a></li>
+                      <li><a href="{% url 'accounts:set_avatar' %}">修改頭像</a></li>
+                      {% if user_obj.isnickname %}
+                      <li><a href="/blog/{{ user_obj.nickname }}/backend/">后台管理</a></li>
+                      {% endif %}
+                      <li role="separator" class="divider"></li>
+                      <li><a href="/accounts/logout/">退出登陸</a></li>
+                  </ul>
+                <!-- Large modal -->
+                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop='false' aria-labelledby="myLargeModalLabel" data-back> 
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <h3 class="text-center">設置昵稱</h3>
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-2">
+                                    <div class="form-group">
+                                        <label for="">現有昵稱</label>
+                                        <input type="text" disabled value="{{ user_obj.nickname }}" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">新昵稱</label>
+                                        <input type="text" id="id_new_nickname" class="form-control">
+                                    </div>
+                                    <button class="btn btn-primary" id="id_edit">設置</button>
+                                    <button class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+          {% else %}
+              <li><a href="/accounts/signup/">注冊</a></li>
+              <li><a href="/accounts/login/">登陸</a></li>
+          {% endif %}
+      </ul>
+      </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+  </div>  
+</nav>
+
+<!--頁面-->
+<div class="container-fluid" id="blog-color">
+    <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-9" id="article-content">
+              <h2>{{ article_obj.title }}</h2>
+              <!-- 頭像 nickname / 2020-12-06 / 分類名 / N則留言 -->
+              <h5 class="article-subtitle"><b>{{ article_obj.blog.user.nickname }}&nbsp;/&nbsp;{{ article_obj.create_time|date:'Y-m-d h:i:s' }}&nbsp;/&nbsp;{{ article_obj.category }}&nbsp;/&nbsp;{{ comment_list.count }}則留言</b></h5>
+              <br>
+              <br>
+              <div>
+                  {{ article_obj.content|safe }}
+              </div>
+              <!--點贊點踩樣式開始-->
+                <div class="clearfix">
+                    <div id="div_digg">
+                    <div class="diggit action">
+                        <span class="diggnum" id="digg_count">{{ article_obj.like_num }}</span>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="diggword" id="digg_tips" style="color: red;">
+                    </div>
+                    </div>
+                </div>
+                <!--點贊點踩樣式結束-->
+
+                <!--評論樓-->
+                <div>
+                    <h4 class="comment-group"><i class="fa fa-comments-o"></i>評論<span>&nbsp;({{ comment_list.count }})</span></h4>
+                </div>
+                <div>
+                <!-- # N楼 2020-12-06 17:23 JasonJi -->
+                {% for comment in comment_list %}
+                    <li class="list-group-item">
+                    <span>#{{ forloop.counter }}樓&nbsp;</span>
+                    <span>{{ comment.comment_time|date:'Y-m-d h:i:s' }}</span>
+                    <span>{{ comment.user.nickname }}</span>
+                    <span><a class="pull-right reply" nickname="{{ comment.user.nickname }}" comment_id="{{ comment.pk }}">回復</a></span>
+                    <div>
+                        <!-- 判斷當前評論是否子評論 如果是需要渲染對應的評論人名 -->
+                        {% if comment.parent_id %}
+                            <p>@{{ comment.parent.user.username }}</p>
+                        {% endif %}
+                            {{ comment.content }}
+                    </div>
+                    </li>
+                {% endfor %}
+                </div>
+
+                <!--文章評論樣式開始-->
+                {% if user_obj.is_authenticated %}
+                  {% if article_obj.comment_status == 'o' %}
+                  <div>
+                      <p><span class="fa fa-comments"></span>發表評論</p>
+                      <div>
+                        <textarea name="commit" id="id_comment" cols="30" rows="5"></textarea>
+                      </div>
+                      <button class="btn btn-primary" id="id_submit">提交評論</button>
+                      <span style="color: red;" id="error"></span>
+                  </div>
+                  {% else %}
+                  <span>作者已關閉評論功能</span>
+                  {% endif %}
+                {% else %}
+                <span>您還沒有登陸, 請您</span>
+                <a href="/accounts/signup/">注冊</a>
+                <span>&nbsp;或&nbsp;</span>
+                <a href="/accounts/login/">登陸</a>
+                {% endif %}
+
+                <!--文章評論樣式結束-->
+                {{ user_obj.page_obj.page_html|safe }}
+            </div>
+            <div class="col-md-2">
+              {% load lefttag %}
+              {% left_menu user_obj.nickname %}
+              <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b>公告</b></h3>
+                </div>
+                <div class="panel-body">
+                    <h5> Github：<a href="https://github.com/WoodRex">  github.com/WoodRex </a></h4>
+                    <h5 style="padding:10px 0"> 教學視頻：<a href="#"> 制作中 </a></h4>
+                </div>
+              </div>
+            </div>
+    </div>
+</div>
+
+<!--底部信息-->
+<div id="footer">CopyRight@WoodRex&nbsp;2020 </div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/set_nickname.js' %}"></script>
+<script>// 設置一個全局的parentID字段
+    let parentId = null
+    
+    var token = $('input[name=csrfmiddlewaretoken]').val();
+    // 給所有的action類綁定事件
+    $('.action').click(function () {
+      let isLike = $(this).hasClass('diggit');
+      let $div = $(this);
+      $.ajax({
+        url:'/comment/like/',
+        type:'post',
+        data:{
+          'article_id':'{{ article_obj.pk }}',
+          'is_like':isLike,
+          csrfmiddlewaretoken: token,
+        },
+        success:function (args){
+          if (args.code == 1000) {
+            $('#digg_tips').text(args.msg)
+            // 前端的數字加一
+            let oldNum = $div.children().text();  // 標籤文本 是字符類型
+            $div.children().text(Number(oldNum) + 1)
+          } else {
+            $('#digg_tips').html(args.msg)
+          }
+        }
+      })
+    })
+    
+    // 用戶點擊評論按鈕後端發送ajax請求
+    $('#id_submit').click(function () {
+      // 獲取用戶評論內容
+      let conTent = $('#id_comment').val();
+    
+      // 判斷當前評論是否子評論
+      // 需要把 @username 去除
+      if(parentId){
+        // 先找到\n對應的索引 利用切片+1
+        let indexNum = conTent.indexOf('\n') + 1;
+        conTent = conTent.slice(indexNum) // 它把indexNum之前的數據全部切除，只保留後面的部分
+      }
+    
+      $.ajax({
+        url:'/comment/send_comment/',
+        type:'post',
+        data:{
+          'article_id':'{{ article_obj.pk }}',
+          'content':conTent,
+          'parent_id':parentId, // 如果parentId沒有值，返回null到後端，沒有影響
+          csrfmiddlewaretoken: token,
+        },
+        success:function (args){
+          if (args.code == 1000) {
+            $('#error').text(args.msg)
+            window.location.reload()
+    
+            // 清空評論框以及全局parentId
+            $('#id_comment').val('')
+            parentId = null;
+    
+            // 臨時渲染評論
+            // let userName = '{{ request.user.nickname }}';
+            // let temp = `
+            // <li class="list-group-item">
+            // <span>$(userName)</span>
+            // <span><a href='#' class="pull-right">回復</a></span>
+            // <div>
+            //   ${conTent}
+            // </div>
+            // </li>
+            // `
+          }
+        }
+      })
+    })
+    
+    // 給回復按鈕綁定點擊事件
+    $('.reply').click(function () {
+      // 評論對應的評論人姓名 還需要評論的主鍵值
+      // 獲取用戶名
+      let commentUserName = $(this).attr('nickname');
+    
+      // 獲取主鍵值
+      parentId = $(this).attr('comment_id');
+    
+      // 拼接信息塞給評論框 並且.focus聚焦到評論框
+      $('#id_comment').val('@' + commentUserName + '\n').focus()
+    })
+</script>
+{% endblock %}

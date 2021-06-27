@@ -1,0 +1,203 @@
+:root {
+    --black: #1c1e21;
+    --border-color: #2f3337;
+    --white: #e4e4e4;
+    --text-white: #fff;
+    --text-gray: #9b9c9d;
+    --primary-color: #5268f4;
+    --radius: 8px;
+    --focus-color: #25272a;
+    --warning-color: #f86262;
+  }
+  
+  .container-f {
+    width: 480px;
+    color: var(--text-gray);
+    background-color: var(--black);
+    border-radius: var(--radius);
+    padding: 50px;
+    padding-bottom: 65px;
+    opacity:0.8;
+    margin-left: 40%;
+  }
+  .container-f .form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    line-height: 1.45;
+  }
+  .container-f .form {
+    color:#fff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  .container-f .form .description {
+    max-width: 85%;
+  }
+  .container-f .form h5 {
+    font-size: 12px;
+    text-align: center;
+    margin: 20px 0 12px;
+  }
+  
+  
+  input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    margin-left: 12px;
+    color: var(--white);
+  }
+  input::placeholder {
+    color: #494b4d;
+  }
+  
+  .label[for="term-of-use"] {
+    -webkit-user-select: none;
+    user-select: none;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    padding-left: 15px;
+  }
+  .label[for="term-of-use"] input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+  }
+  .label[for="term-of-use"] input:checked + .checkmark {
+    background-color: var(--primary-color);
+  }
+  .label[for="term-of-use"] input:checked + .checkmark::before {
+    display: block;
+  }
+  .label[for="term-of-use"] .checkmark {
+    cursor: pointer;
+    vertical-align: middle;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    margin-right: 5px;
+    position: relative;
+  }
+  .label[for="term-of-use"] .checkmark::before {
+    display: none;
+    content: "";
+    width: 4px;
+    left: 6px;
+    top: 3px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg);
+    position: absolute;
+  }
+  .label[for="term-of-use"] .checkmark:hover {
+    background-color: var(--focus-color);
+  }
+  
+  #id_reg {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    user-select: none;
+    border: 0;
+    outline: 0;
+    background-color: grey;
+    font-weight: 400;
+    font-family: inherit;
+    color: #fff;
+    padding: 15px 32px;
+    text-align: center;
+    border-radius: var(--radius);
+  }
+  #id_reg:hover {
+    background-color: #3f57f3;
+  }
+  #id_reg:active {
+    color: #9b9c9d;
+    background: #3a4797;
+  }
+  
+  .social {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+  }
+  .social .icon-holder {
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    display: inline-grid;
+    place-content: center;
+    position: relative;
+    padding: 15px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    margin-right: 15px;
+  }
+  .social .icon-holder:hover {
+    background-color: #1da1f2;
+  }
+  .social .icon-holder:hover > i {
+    color: #fff;
+  }
+  .social i {
+    font-size: 16px;
+    color: var(--white);
+  }
+  
+  .login {
+    text-align: center;
+    color: var(--white);
+  }
+  
+  html {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+  
+  body {
+    width: 100%;
+    height: 100vh;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.15;
+    border-radius: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url('/static/img/registerbg.png');
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  a {
+    text-decoration: none;
+    color: var(--primary-color);
+  }
+
+  #h2 {
+    color:#fff;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }

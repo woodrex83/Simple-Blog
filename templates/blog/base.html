@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    {% load compress %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../favicon.ico">
+    <title>{% block head_title %}{% endblock %}</title>
+    {% compress css %}
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- TODC Bootstrap core CSS-->
+    <link rel="stylesheet" href="{% static 'css/todc-bootstrap.min.css' %}">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+      {% block stylish %}
+      {% endblock stylish %}
+    {% endcompress %}
+    <!-- JS -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block body %}
+
+    {% endblock %}
+
+    {% compress js %}
+      {% block js %}
+  
+      {% endblock js %}
+    {% endcompress %}
+  </body>
+</html>
