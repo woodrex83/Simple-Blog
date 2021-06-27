@@ -224,8 +224,8 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST') or 'smtp.gmail.com'
 EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT') or 465)
-EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_USER') or 'woodrex83@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_PASSWORD') or 'gcnihzsdowopwynf'
+EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
