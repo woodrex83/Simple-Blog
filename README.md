@@ -1,7 +1,10 @@
-﻿# Blogbuilder 仿博客社區網站
+﻿## Updated 23/12/17
+這是我第一次學習python寫的程序，由於工作關係一直沒有更新，目前已擱置
+
+# Blogbuilder 仿博客社區網站
 
 基于`Django`，本質上是個人博客+博客社區系統
-![](https://img.shields.io/github/last-commit/WoodRex/DjangoJSBlog)   ![](https://img.shields.io/pypi/pyversions/Django) ![](https://img.shields.io/pypi/djversions/djangorestframework)
+![](https://img.shields.io/github/last-commit/WoodRex/DjangoJSBlog)   ![](https://img.shields.io/badge/python-3.7%20|%203.8%20|%203.9-blue) ![](https://img.shields.io/badge/django-versions%203.0%20|%203.1%20|%203.2-blue)
 ## 項目展示
 
 [http://woodrex83.pythonanywhere.com/blog/woodrex83](http://woodrex83.pythonanywhere.com/blog/woodrex83)
